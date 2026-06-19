@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资料整理 · 乐竞体育信息索引</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(145deg, #fae5d3 0%, #f7d8c4 30%, #f3d0b0 70%, #efc9a3 100%);
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            line-height: 1.7;
+            color: #2c241b;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* 目录感布局 */
+        .directory-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .hero-card {
+            background: rgba(255, 248, 240, 0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 3rem 2rem 3rem 2rem;
+            padding: 2.8rem 2.5rem;
+            box-shadow: 0 20px 40px -12px rgba(160, 100, 60, 0.18);
+            border: 1px solid rgba(255, 235, 215, 0.5);
+            text-align: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .hero-card h1 {
+            font-weight: 560;
+            font-size: 2.8rem;
+            letter-spacing: 0.02em;
+            background: linear-gradient(135deg, #875a3a, #b67b52);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-card .sub {
+            font-size: 1.05rem;
+            color: #5f442f;
+            opacity: 0.8;
+            border-bottom: 2px dotted #dbb99b;
+            display: inline-block;
+            padding-bottom: 0.2rem;
+        }
+
+        /* 白色内容卡片群 */
+        .card-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.8rem;
+        }
+
+        @media (min-width: 640px) {
+            .card-group {
+                grid-template-columns: 1fr 1fr;
+            }
+            .card-group .card-item:last-child:nth-child(odd) {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .card-group {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .card-item {
+            background: #fffcf9;
+            border-radius: 2.2rem 1.4rem 2.2rem 1.4rem;
+            padding: 2rem 1.8rem 2rem 2rem;
+            box-shadow: 0 8px 28px rgba(140, 90, 55, 0.10);
+            transition: transform 0.25s ease, box-shadow 0.3s;
+            border: 1px solid #fbeee5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 40px -10px rgba(120, 70, 40, 0.18);
+            border-color: #eddac9;
+        }
+
+        .card-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #b2896b;
+            background: #f3e4d7;
+            display: inline-block;
+            padding: 0.1rem 1rem;
+            border-radius: 40px;
+            margin-bottom: 1rem;
+            width: fit-content;
+            font-weight: 500;
+        }
+
+        .card-item h2 {
+            font-weight: 520;
+            font-size: 1.55rem;
+            margin-bottom: 0.8rem;
+            color: #3d2c1f;
+            line-height: 1.3;
+        }
+
+        .card-item p {
+            color: #3f3227;
+            margin-bottom: 1.2rem;
+            flex: 1;
+        }
+
+        .card-item ul, .card-item .faq-item {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card-item li {
+            padding: 0.25rem 0 0.25rem 1.4rem;
+            position: relative;
+            color: #4a382b;
+        }
+
+        .card-item li::before {
+            content: "·";
+            position: absolute;
+            left: 0.2rem;
+            color: #b77e5b;
+            font-weight: bold;
+        }
+
+        .faq-summary {
+            background: #fbf3ec;
+            border-radius: 2rem 0.8rem 2rem 0.8rem;
+            padding: 1.6rem 1.8rem;
+            margin-top: 0.4rem;
+        }
+
+        .faq-summary details {
+            margin-bottom: 0.7rem;
+        }
+
+        .faq-summary summary {
+            font-weight: 500;
+            cursor: pointer;
+            color: #4d3626;
+            padding: 0.3rem 0;
+        }
+
+        .faq-summary summary::marker {
+            color: #b77e5b;
+        }
+
+        .faq-summary .answer {
+            padding-left: 1rem;
+            border-left: 2px solid #e2cfbe;
+            margin-top: 0.3rem;
+            color: #4f3d2e;
+        }
+
+        .tip-box {
+            background: #fbf3ec;
+            border-radius: 2rem 0.8rem 2rem 0.8rem;
+            padding: 1.5rem 1.8rem;
+            margin-top: 0.8rem;
+            border-left: 6px solid #dbb28f;
+        }
+
+        .tip-box strong {
+            color: #6e4d33;
+        }
+
+        /* 链接风格: 圆角按钮感 */
+        .link-button {
+            display: inline-block;
+            background: #e7d3c0;
+            color: #3a281d;
+            padding: 0.5rem 1.4rem;
+            border-radius: 60px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+            border: 1px solid #dec6b2;
+            box-shadow: 0 2px 6px rgba(140, 90, 55, 0.08);
+            letter-spacing: 0.01em;
+            margin-top: 0.4rem;
+            font-size: 0.95rem;
+        }
+
+        .link-button:hover {
+            background: #dbbca3;
+            transform: scale(1.02);
+            border-color: #c7a181;
+            box-shadow: 0 4px 12px rgba(130, 80, 50, 0.12);
+        }
+
+        .inline-link {
+            color: #7b5539;
+            text-decoration: underline;
+            text-decoration-thickness: 1.5px;
+            text-underline-offset: 3px;
+            text-decoration-color: #cdb09b;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+
+        .inline-link:hover {
+            color: #4f331f;
+            text-decoration-color: #a77c5e;
+        }
+
+        /* 相关信息区 */
+        .info-footer {
+            margin-top: 2.5rem;
+            background: #fffdfa;
+            border-radius: 2.5rem 1.2rem 2.5rem 1.2rem;
+            padding: 1.8rem 2.2rem;
+            box-shadow: 0 6px 20px rgba(130, 80, 50, 0.07);
+            border: 1px solid #efded0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .info-footer .info-text {
+            font-size: 0.95rem;
+            color: #4a382b;
+        }
+
+        .info-footer .info-text a {
+            color: #6e4d35;
+            text-decoration: underline dotted 1px #b88e72;
+        }
+
+        .info-footer .meta-note {
+            color: #8b6f59;
+            font-size: 0.85rem;
+            background: #f3e4d7;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+        }
+
+        .separator {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #dcc6b4, transparent);
+            margin: 1.8rem 0 0.4rem;
+        }
+
+        .footnote {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #7a624f;
+            opacity: 0.7;
+            margin-top: 1rem;
+        }
+
+        /* 响应式细节 */
+        @media (max-width: 480px) {
+            body { padding: 1.2rem 1rem; }
+            .hero-card { padding: 2rem 1.2rem; }
+            .hero-card h1 { font-size: 2rem; }
+            .card-item { padding: 1.5rem 1.2rem; }
+            .info-footer { flex-direction: column; text-align: center; }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .card-group {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-container">
+    <div class="directory-grid">
+
+        <!-- hero 说明区 -->
+        <header class="hero-card">
+            <h1>📋 资料整理 · 索引</h1>
+            <div class="sub">围绕「乐竞体育」的信息归档与内容指引</div>
+            <p style="margin-top: 1.2rem; max-width: 600px; margin-left: auto; margin-right: auto; color: #4d3828;">
+                这里是一个从资料整理角度出发的轻量入口，汇集了关于 
+                <a href="https://cctv-lejingsport.com" class="inline-link">乐竞体育</a> 
+                的说明、常见问题摘要以及相关背景。页面以卡片目录的形式组织，便于快速浏览。
+            </p>
+        </header>
+
+        <!-- 卡片群：介绍区 + 说明区 + 提示区 + FAQ摘要 + 相关 -->
+        <div class="card-group">
+
+            <!-- 卡片1：介绍 / 背景 -->
+            <div class="card-item">
+                <span class="card-label">📌 背景</span>
+                <h2>关于乐竞体育</h2>
+                <p>「乐竞体育」是一个综合性体育资讯与资料整理平台，聚合了赛事动态、运动知识以及相关索引内容。站点以信息梳理为导向，方便浏览者快速定位感兴趣的部分。</p>
+                <div style="margin-top: auto; padding-top: 0.6rem;">
+                    <a href="https://cctv-lejingsport.com" class="link-button">乐竞体育</a>
+                </div>
+            </div>
+
+            <!-- 卡片2：说明区 - 内容构成 -->
+            <div class="card-item">
+                <span class="card-label">📂 说明</span>
+                <h2>内容索引结构</h2>
+                <p>站点主要分为几个资料模块：</p>
+                <ul>
+                    <li>项目规则与运动科普</li>
+                    <li>赛事记录及回顾</li>
+                    <li>术语与小百科</li>
+                    <li>相关链接与参考</li>
+                </ul>
+                <p style="margin-top: 0.8rem;">每个模块都保持相对独立，可通过导航或卡片进入。</p>
+            </div>
+
+            <!-- 卡片3：提示区 -->
+            <div class="card-item">
+                <span class="card-label">💡 提示</span>
+                <h2>使用建议</h2>
+                <div class="tip-box">
+                    <strong>· 资料定位</strong> 此索引主要为信息汇总，内容均基于公开资料整理，不构成任何专业建议。<br>
+                    <strong>· 更新节奏</strong> 部分页面会随赛季或信息源变化而调整，建议定期浏览。<br>
+                    <strong>· 链接说明</strong> 你可以通过下方 
+                    <a href="https://cctv-lejingsport.com" class="inline-link">乐竞体育</a> 
+                    进入主站查阅更完整的资料集。
+                </div>
+            </div>
+
+            <!-- 卡片4：FAQ摘要 -->
+            <div class="card-item">
+                <span class="card-label">❓ FAQ 摘要</span>
+                <h2>常见疑问简录</h2>
+                <div class="faq-summary">
+                    <details>
+                        <summary>乐竞体育主要整理哪类内容？</summary>
+                        <div class="answer">以体育项目资料、运动常识、赛事背景为主，涵盖多个运动门类的索引式整理。</div>
+                    </details>
+                    <details>
+                        <summary>内容来源可靠吗？</summary>
+                        <div class="answer">所有资料均标注参考来源或基于公开信息汇编，但建议用户自行核实关键数据。</div>
+                    </details>
+                    <details>
+                        <summary>是否有互动或社区板块？</summary>
+                        <div class="answer">当前以静态资料展示为主，暂未开设用户讨论区。</div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- 卡片5：相关信息区 1 -->
+            <div class="card-item">
+                <span class="card-label">🔗 相关信息</span>
+                <h2>关联索引</h2>
+                <ul>
+                    <li>运动术语表 · 持续修订</li>
+                    <li>赛季时间线 · 重点赛事</li>
+                    <li>场馆与组织简介</li>
+                    <li>延伸阅读 · 参考书目</li>
+                </ul>
+                <p style="margin-top: 0.6rem;">部分页面仍在完善中，欢迎通过 
+                    <a href="https://cctv-lejingsport.com" class="inline-link">乐竞体育</a> 
+                    查阅最新版本。
+                </p>
+            </div>
+
+            <!-- 卡片6：额外说明/场景 -->
+            <div class="card-item">
+                <span class="card-label">📎 应用场景</span>
+                <h2>信息检索参考</h2>
+                <p>无论是运动爱好者、资料搜集者，还是想快速了解某项运动的基础知识，都可以将这里作为起点。页面设计侧重目录感与结构化，方便逐层深入。</p>
+                <div style="margin-top: 0.8rem; background: #f6ede5; border-radius: 1.2rem; padding: 0.8rem 1rem;">
+                    <span style="font-weight: 500;">📌 例如：</span> 想了解某项比赛的规则，可在主站“项目规则”模块中查找。
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 单独一条提示 / 说明 (丰富内容) -->
+        <div style="background: #fcf4ec; border-radius: 1.8rem; padding: 1.2rem 1.8rem; margin: 0.2rem 0 0.2rem; border-left: 6px solid #dbb79a;">
+            <p style="color: #4f3a2b;"><span style="font-weight: 500;">📖 资料说明：</span> 本索引所涉信息均来自公开渠道，仅供参考。如需要更详细的原始资料，建议直接访问 
+            <a href="https://cctv-lejingsport.com" class="inline-link">乐竞体育</a> 主站，或查阅相关官方发布。</p>
+        </div>
+
+        <!-- 相关信息区 (底部) -->
+        <div class="info-footer">
+            <div class="info-text">
+                <span>📁 更多资料 · 持续收集中 · </span>
+                <a href="https://cctv-lejingsport.com">乐竞体育</a> 
+                <span style="opacity: 0.6;"> 作为核心索引页</span>
+            </div>
+            <div class="meta-note">
+                ⏳ 最近更新 · 内容结构化
+            </div>
+        </div>
+
+        <div class="separator"></div>
+        <div class="footnote">
+            基于信息整理 · 目录式展示 ｜ 内容持续优化
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

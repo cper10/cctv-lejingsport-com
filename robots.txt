@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cper10.github.io/cctv-lejingsport-com/sitemap.xml
